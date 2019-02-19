@@ -1,4 +1,4 @@
-package com.thoughtworks.notable.notable;
+package notable;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
