@@ -3,14 +3,16 @@ Feature: Create a note
   In order to access my notes at a future date
   I would like to be able to create and save my notes
 
-Scenario Outline: Create note resource with HTTP POST
+Scenario: Create note resource with HTTP POST
   When I make a POST request
-  Then I should get an HTTP success "<status_code>"
+  Then I should get an HTTP success
+
+
+Scenario: Read single resource with HTTP GET request
+  Given I have a note with id "1" with content "Quick brown fox"
+  When I make a GET request to "/note/1"
+  Then I should get an HTTP success
   And the response body should be:
     """
-    {"content":"Hello World"}
+    {"id":"1","content":"Quick brown fox"}
     """
-
-  Examples:
-      | status_code |
-      | 200         |
