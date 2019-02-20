@@ -13,8 +13,8 @@ import org.junit.Assert;
 public class NoteManagement_Stepdefs {
     private static HttpResponse response;
 
-    @When("^I make a \"([^\"]*)\" request to \"([^\"]*)\"$")
-    public void i_make_a_request_to(String arg1, String arg2) throws Exception {
+    @When("^I make a POST request$")
+    public void i_make_a_POST_request() throws Exception {
         HttpClient httpClient = HttpClientBuilder.create().build();
 
         HttpPost request = new HttpPost("http://localhost:8080/notes");
@@ -26,8 +26,8 @@ public class NoteManagement_Stepdefs {
         response = httpClient.execute(request);
     }
 
-    @Then("^I should get an HTTP \"([^\"]*)\" status code$")
-    public void i_should_get_an_HTTP_status_code(String status_code) {
+    @Then("^I should get an HTTP success \"([^\"]*)\"$")
+    public void i_should_get_an_HTTP_success(String status_code) throws Exception {
         Assert.assertEquals(
                 Integer.parseInt(status_code),
                 response.getStatusLine().getStatusCode()
@@ -35,9 +35,9 @@ public class NoteManagement_Stepdefs {
     }
 
     @Then("^the response body should be:$")
-    public void the_response_body_should_be(String arg1) throws Exception {
+    public void the_response_body_should_be(String expected_response_body) throws Exception {
         Assert.assertEquals(
-                "\"content\":\"Hello World\"",
+                expected_response_body,
                 EntityUtils.toString(response.getEntity())
         );
     }

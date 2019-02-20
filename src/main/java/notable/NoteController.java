@@ -9,6 +9,6 @@ public class NoteController {
 
     @RequestMapping(value = "/notes", method = RequestMethod.POST)
     public String addNotable() {
-        return "\"content\":\"Hello World\"";
+        return "{\"content\":\"Hello World\"}";
     }
 }
