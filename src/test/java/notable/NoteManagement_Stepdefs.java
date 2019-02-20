@@ -1,65 +1,45 @@
 package notable;
 
-import com.github.tomakehurst.wiremock.WireMockServer;
-import cucumber.api.PendingException;
-import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Scanner;
-
-import static com.github.tomakehurst.wiremock.client.WireMock.*;
-import static junit.framework.TestCase.assertEquals;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.util.EntityUtils;
+import org.junit.Assert;
 
 public class NoteManagement_Stepdefs {
-    private static final String NOTABLE_PATH = "/notable";
-    private WireMockServer wireMockServer = new WireMockServer();
-    private CloseableHttpClient httpClient = HttpClients.createDefault();
+    private static HttpResponse response;
 
-    @Given("^I am on the home page$")
-    public void i_am_on_the_home_page() throws IOException {
-        wireMockServer.start();
+    @When("^I make a \"([^\"]*)\" request to \"([^\"]*)\"$")
+    public void i_make_a_request_to(String arg1, String arg2) throws Exception {
+        HttpClient httpClient = HttpClientBuilder.create().build();
 
-        configureFor("localhost", 8080);
-        stubFor(get(urlEqualTo(NOTABLE_PATH)).willReturn(aResponse().withBody("Welcome to Notable!")));
+        HttpPost request = new HttpPost("http://localhost:8080/notes");
+        StringEntity params = new StringEntity("note={\"content\":\"Hello World\"}");
+        //request.addHeader("content-type", "application/json");
+        request.addHeader("content-type", "application/x-www-form-urlencoded");
+        request.setEntity(params);
 
-        HttpGet request = new HttpGet("http://localhost:8080/notable");
-        HttpResponse httpResponse = httpClient.execute(request);
-        String stringResponse = convertResponseToString(httpResponse);
-
-        verify(getRequestedFor(urlEqualTo(NOTABLE_PATH)));
-        assertEquals("Welcome to Notable!", stringResponse);
+        response = httpClient.execute(request);
     }
 
-    private static String convertResponseToString(@org.jetbrains.annotations.NotNull HttpResponse response) throws IOException {
-        InputStream responseStream = response.getEntity().getContent();
-        Scanner scanner = new Scanner(responseStream, "UTF-8");
-        String stringResponse = scanner.useDelimiter("\\Z").next();
-        scanner.close();
-        return stringResponse;
+    @Then("^I should get an HTTP \"([^\"]*)\" status code$")
+    public void i_should_get_an_HTTP_status_code(String status_code) {
+        Assert.assertEquals(
+                Integer.parseInt(status_code),
+                response.getStatusLine().getStatusCode()
+        );
     }
 
-    @When("^I enter my note$")
-    public void i_enter_my_note() {
-        // Write code here that turns the phrase above into concrete actions
-        throw new PendingException();
+    @Then("^the response body should be:$")
+    public void the_response_body_should_be(String arg1) throws Exception {
+        Assert.assertEquals(
+                "\"content\":\"Hello World\"",
+                EntityUtils.toString(response.getEntity())
+        );
     }
 
-    @When("^I save it$")
-    public void i_save_it() {
-        // Write code here that turns the phrase above into concrete actions
-        throw new PendingException();
-    }
-
-    @Then("^note should be saved successfully$")
-    public void note_should_be_saved_successfully() {
-        // Write code here that turns the phrase above into concrete actions
-        throw new PendingException();
-    }
 }

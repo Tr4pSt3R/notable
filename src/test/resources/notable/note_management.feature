@@ -3,8 +3,12 @@ Feature: Create a note
   In order to access my notes at a future date
   I would like to be able to create and save my notes
 
-Scenario: Create note
-  Given I am on the home page
-  When I enter my note
-  And I save it
-  Then note should be saved successfully
+Scenario: Create note resource with HTTP POST
+  When I make a "POST" request to "/notes"
+  Then I should get an HTTP "200" status code
+  And the response body should be:
+  """
+  {
+    "content": "Hello World"
+  }
+  """
