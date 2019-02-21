@@ -26,3 +26,9 @@ Scenario: Read single resource with HTTP GET request
       """
       {"id":"1","content":"Quick brown dog"}
       """
+
+  Scenario: Delete note
+    Given I have a note with id "1" and with content "Quick brown fox"
+    When I make a DELETE request to "/note/1"
+    Then I should get an HTTP success
+    And a note with content "Quick brown fox" should not appear in index view

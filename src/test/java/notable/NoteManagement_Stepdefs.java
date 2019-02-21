@@ -5,6 +5,7 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
@@ -43,6 +44,21 @@ public class NoteManagement_Stepdefs {
         response = httpClient.execute(request);
     }
 
+    @When("^I make a DELETE request to \"([^\"]*)\"$")
+    public void i_make_a_DELETE_request_to(String uri) throws Exception {
+        HttpDelete request = new HttpDelete(BASE_URL + uri);
+        request.addHeader("content-type", "application/json");
+
+        response = httpClient.execute(request);
+    }
+
+    @Then("^a note with content \"([^\"]*)\" should not appear in index view$")
+    public void a_note_with_content_should_not_appear_in_index_view(String deleted_content) throws Exception {
+        String response_string = EntityUtils.toString(response.getEntity());
+
+        Assert.assertFalse(response_string.contains(deleted_content));
+    }
+
     @Then("^I should get an HTTP success$")
     public void i_should_get_an_HTTP_success() {
         Assert.assertEquals(
@@ -66,7 +82,7 @@ public class NoteManagement_Stepdefs {
 
     @When("^I make a GET request to \"([^\"]*)\"$")
     public void i_make_a_GET_request_to(String uri) throws Exception {
-        HttpGet request = new HttpGet("http://localhost:8080" + uri);
+        HttpGet request = new HttpGet(BASE_URL + uri);
         response = httpClient.execute(request);
     }
 

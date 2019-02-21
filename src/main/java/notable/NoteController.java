@@ -37,4 +37,11 @@ public class NoteController {
 
         return getNote(id);
     }
+
+    @RequestMapping(method = RequestMethod.DELETE, value="/note/{id}")
+    public List<Note> deleteNote(@PathVariable String id) {
+        notes.removeIf(n -> n.getId().equals(id));
+
+        return notes;
+    }
 }
