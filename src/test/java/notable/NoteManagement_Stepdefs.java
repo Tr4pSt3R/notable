@@ -7,6 +7,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpPut;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
@@ -23,10 +24,19 @@ public class NoteManagement_Stepdefs {
 
     @When("^I make a POST request$")
     public void i_make_a_POST_request() throws Exception {
-        HttpClient httpClient = HttpClientBuilder.create().build();
-
         HttpPost request = new HttpPost(BASE_URL + "/notes");
         StringEntity params = new StringEntity("{\"id\": \"0\", \"content\":\"Hello World\"}");
+        request.addHeader("content-type", "application/json");
+        request.setEntity(params);
+
+        response = httpClient.execute(request);
+    }
+
+    @When("^I change the content of the note with id \"([^\"]*)\" to \"([^\"]*)\"$")
+    public void i_change_the_content_of_the_note_with_id_to(String id, String content) throws Exception {
+        HttpPut request = new HttpPut(BASE_URL + "/note/" + id);
+        String data = String.format("{\"id\": \"%s\", \"content\": \"%s\"}", id, content);
+        StringEntity params = new StringEntity(data);
         request.addHeader("content-type", "application/json");
         request.setEntity(params);
 
@@ -42,7 +52,7 @@ public class NoteManagement_Stepdefs {
     }
 
 
-    @Given("^I have a note with id \"([^\"]*)\" with content \"([^\"]*)\"$")
+    @Given("^I have a note with id \"([^\"]*)\" and with content \"([^\"]*)\"$")
     public void i_have_a_note_with_id_with_content(String id, String content) throws Exception {
         HttpPost request = new HttpPost(BASE_URL + "/notes");
         String data = String.format("{\"id\": \"%s\", \"content\": \"%s\"}", id, content);
