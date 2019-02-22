@@ -3,7 +3,6 @@ package notable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -13,7 +12,7 @@ public class NoteController {
     private NoteService noteService;
 
     @RequestMapping("/notes")
-    public List<Note> allNotes() {
+    public Iterable<Note> allNotes() {
         return noteService.allNotes();
     }
 
@@ -33,7 +32,7 @@ public class NoteController {
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value="/note/{id}")
-    public List<Note> deleteNote(@PathVariable String id) {
+    public Iterable<Note> deleteNote(@PathVariable String id) {
         return noteService.deleteNote(id);
     }
 }

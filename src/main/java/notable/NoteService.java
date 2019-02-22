@@ -3,8 +3,6 @@ package notable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -27,19 +25,13 @@ public class NoteService {
         return noteRepository.findById(id);
     }
 
-    public List<Note> deleteNote(String id) {
+    public Iterable<Note> deleteNote(String id) {
         noteRepository.deleteById(id);
 
-        List<Note> notes = new ArrayList<>();
-        noteRepository.findAll().forEach(notes::add);
-
-        return notes;
+        return noteRepository.findAll();
     }
 
-    public List<Note> allNotes() {
-        List<Note> notes = new ArrayList<>();
-        noteRepository.findAll().forEach(notes::add);
-
-        return notes;
+    public Iterable<Note> allNotes() {
+        return noteRepository.findAll();
     }
 }
