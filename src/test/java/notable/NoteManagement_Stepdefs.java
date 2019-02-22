@@ -23,9 +23,7 @@ public class NoteManagement_Stepdefs {
         httpClient = HttpClientBuilder.create().build();
     }
 
-
-    @Given("^I have a note with \"([^\"]*)\" and \"([^\"]*)\"$")
-    public void i_have_a_note_with_and(String id, String content) throws Exception {
+    private void httpPostHelper(String id, String content) throws Exception {
         HttpPost request = new HttpPost(BASE_URL + "/notes");
         String data = String.format("{\"id\": \"%s\", \"content\":\"%s\"}", id, content);
         StringEntity params = new StringEntity(data);
@@ -35,15 +33,15 @@ public class NoteManagement_Stepdefs {
         response = httpClient.execute(request);
     }
 
+    @Given("^I have a note with \"([^\"]*)\" and \"([^\"]*)\"$")
+    public void i_have_a_note_with_and(String id, String content) throws Exception {
+        httpPostHelper(id, content);
+    }
+
 
     @When("^I make a POST request$")
     public void i_make_a_POST_request() throws Exception {
-        HttpPost request = new HttpPost(BASE_URL + "/notes");
-        StringEntity params = new StringEntity("{\"id\": \"0\", \"content\":\"Hello World\"}");
-        request.addHeader("content-type", "application/json");
-        request.setEntity(params);
-
-        response = httpClient.execute(request);
+        httpPostHelper("0", "Hello World");
     }
 
     @When("^I change the content of the note with id \"([^\"]*)\" to \"([^\"]*)\"$")
@@ -88,13 +86,7 @@ public class NoteManagement_Stepdefs {
 
     @Given("^I have a note with id \"([^\"]*)\" and with content \"([^\"]*)\"$")
     public void i_have_a_note_with_id_with_content(String id, String content) throws Exception {
-        HttpPost request = new HttpPost(BASE_URL + "/notes");
-        String data = String.format("{\"id\": \"%s\", \"content\": \"%s\"}", id, content);
-        StringEntity params = new StringEntity(data);
-        request.addHeader("content-type", "application/json");
-        request.setEntity(params);
-
-        response = httpClient.execute(request);
+        httpPostHelper(id, content);
     }
 
 
