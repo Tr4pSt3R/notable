@@ -32,3 +32,14 @@ Scenario: Read single resource with HTTP GET request
     When I make a DELETE request to "/note/1"
     Then I should get an HTTP success
     And a note with content "Quick brown fox" should not appear in index view
+
+
+  Scenario Outline: Show all notes
+    Given I have a note with "<id>" and "<content>"
+    When I make a GET request to "/notes"
+    Then I should see "<id>" and "<content>"
+
+    Examples:
+      | id | content        |
+      | 1  | Lorem ipsum    |
+      | 2  | Dolor sit amet |

@@ -22,8 +22,7 @@ public class NoteController {
 
     @RequestMapping("/note/{id}")
     public Note getNote(@PathVariable String id) {
-        Note note =  notes.stream().filter(n -> n.getId().equals(id)).findFirst().get();
-        return note;
+       return notes.stream().filter(n -> n.getId().equals(id)).findFirst().get();
     }
 
     @RequestMapping(method = RequestMethod.PUT, value="/note/{id}")

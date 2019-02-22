@@ -23,6 +23,19 @@ public class NoteManagement_Stepdefs {
         httpClient = HttpClientBuilder.create().build();
     }
 
+
+    @Given("^I have a note with \"([^\"]*)\" and \"([^\"]*)\"$")
+    public void i_have_a_note_with_and(String id, String content) throws Exception {
+        HttpPost request = new HttpPost(BASE_URL + "/notes");
+        String data = String.format("{\"id\": \"%s\", \"content\":\"%s\"}", id, content);
+        StringEntity params = new StringEntity(data);
+        request.addHeader("content-type", "application/json");
+        request.setEntity(params);
+
+        response = httpClient.execute(request);
+    }
+
+
     @When("^I make a POST request$")
     public void i_make_a_POST_request() throws Exception {
         HttpPost request = new HttpPost(BASE_URL + "/notes");
@@ -50,6 +63,11 @@ public class NoteManagement_Stepdefs {
         request.addHeader("content-type", "application/json");
 
         response = httpClient.execute(request);
+    }
+
+    @Then("^I should see \"([^\"]*)\" and \"([^\"]*)\"$")
+    public void i_should_see_and(String id, String content) throws Exception {
+        Assert.assertTrue(EntityUtils.toString(response.getEntity()).contains(content));
     }
 
     @Then("^a note with content \"([^\"]*)\" should not appear in index view$")
