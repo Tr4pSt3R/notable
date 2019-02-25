@@ -11,6 +11,7 @@ public class NoteController {
     @Autowired
     private NoteService noteService;
 
+    @CrossOrigin
     @RequestMapping("/notes")
     public Iterable<Note> allNotes() {
         return noteService.allNotes();
