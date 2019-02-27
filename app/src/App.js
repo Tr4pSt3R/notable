@@ -1,27 +1,18 @@
 import React, { Component } from 'react';
 import './App.css';
+import Notelist from "./components/NoteList";
 
 class App extends Component {
-  state = {
-    notes: []
-  }
-
-  async componentDidMount() {
-    const response = await fetch('http://localhost:8080/notes')
-    const body = await response.json();
-    this.setState({ notes: body })
-  }
-
   render() {
     return (
-      <div className="App">
-        <h1>Notes</h1>
-        {this.state.notes.map(note =>
-          <div key={note.id}>
-            {note.content}
-          </div>
-        )}
-      </div>
+        <div className="App">
+          <header className="App-header">
+            <h1 className="App-title">
+              Notability
+            </h1>
+          </header>
+          <Notelist />
+        </div>
     );
   }
 }

@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Bean;
 public class NotableApplication {
 
 	@Autowired
-	NoteRepository noteRepository;;
+	private NoteRepository noteRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(NotableApplication.class, args);
@@ -20,9 +20,9 @@ public class NotableApplication {
 	CommandLineRunner runner() {
 		return args -> {
 			/* Add seed data */
-			noteRepository.save(new Note("1", "Lorem ipsum dolor"));
-			noteRepository.save(new Note("2", "Sriracha scenester cardigan"));
-			noteRepository.save(new Note("3", "Tofu commodo squid"));
+			noteRepository.save(new Note("100", "Lorem ipsum dolor"));
+			noteRepository.save(new Note("200", "Sriracha scenester cardigan"));
+			noteRepository.save(new Note("300", "Tofu commodo squid"));
 		};
 	}
 

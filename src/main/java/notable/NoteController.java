@@ -12,27 +12,28 @@ public class NoteController {
     private NoteService noteService;
 
     @CrossOrigin
-    @RequestMapping("/notes")
+    @RequestMapping("/api/notes")
     public Iterable<Note> allNotes() {
         return noteService.allNotes();
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/notes")
+    @CrossOrigin
+    @RequestMapping(method = RequestMethod.POST, value = "/api/notes")
     public void addNote(@RequestBody Note note) {
         noteService.addNote(note);
     }
 
-    @RequestMapping("/note/{id}")
+    @RequestMapping("/api/note/{id}")
     public Optional<Note> getNote(@PathVariable String id) {
         return noteService.getNote(id);
     }
 
-    @RequestMapping(method = RequestMethod.PUT, value="/note/{id}")
+    @RequestMapping(method = RequestMethod.PUT, value="/api/note/{id}")
     public Optional<Note> updateNote(@RequestBody Note note, @PathVariable String id) {
         return noteService.updateNote(note, id);
     }
 
-    @RequestMapping(method = RequestMethod.DELETE, value="/note/{id}")
+    @RequestMapping(method = RequestMethod.DELETE, value="/api/note/{id}")
     public Iterable<Note> deleteNote(@PathVariable String id) {
         return noteService.deleteNote(id);
     }
