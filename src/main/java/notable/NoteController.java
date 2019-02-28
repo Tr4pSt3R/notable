@@ -33,6 +33,7 @@ public class NoteController {
         return noteService.updateNote(note, id);
     }
 
+    @CrossOrigin
     @RequestMapping(method = RequestMethod.DELETE, value="/api/note/{id}")
     public Iterable<Note> deleteNote(@PathVariable String id) {
         return noteService.deleteNote(id);

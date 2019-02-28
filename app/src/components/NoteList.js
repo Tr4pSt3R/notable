@@ -32,19 +32,33 @@ class Notelist extends Component {
       body: JSON.stringify(note)
     })
     .then(() => toast.success("Note added successfully"))
-    .then((response) => this.fetchNotes())
-    .catch(err => console.log(err))
+    .then(() => this.fetchNotes())
+    .catch((err) => console.log(err))
   };
+
+  deleteNote(value) {
+    let id = value.target.id.split("__")[1];
+
+    fetch(SERVER_URL + 'api/note/' + id, {
+      method: 'DELETE'
+    })
+    .then( () => toast.success("Note deleted successfully"))
+    .then( () => this.fetchNotes() )
+    .catch( (err) => console.log(err));
+  }
 
   render() {
     return (
         <div className="Notelist">
-          { this.state.allNotes.map((note) =>
+          {
+            this.state.allNotes.map((note) =>
               <div key={note.id}>
                 {note.content}
+                <a id={"delete__" + note.id} href="#" onClick={ (value) => this.deleteNote(value)}>Delete</a>
               </div>
-          )}
-          <ToastContainer/>
+            )
+          }
+          <ToastContainer />
           <AddNote addNote={this.addNote} fetchNotes={this.fetchNotes} />
         </div>
     );
