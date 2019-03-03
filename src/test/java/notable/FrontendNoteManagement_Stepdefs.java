@@ -26,9 +26,23 @@ public class FrontendNoteManagement_Stepdefs {
         driver.findElement(By.name(target)).sendKeys(value);
     }
 
+    private void updateInput(String target, String value) {
+        driver.findElement(By.name(target)).clear();
+        driver.findElement(By.name(target)).sendKeys(value);
+    }
+
     private void submitForm() throws Exception {
         Thread.sleep(3000);
         driver.findElement(By.id("btn__add-note")).click();
+    }
+
+    private void updateForm() throws Exception {
+        Thread.sleep(3000);
+        driver.findElement(By.id("btn__update-note")).click();
+    }
+
+    private void clickOn(String element) {
+        driver.findElement(By.id(element)).click();
     }
 
     /* ADD NEW NOTE */
@@ -90,5 +104,35 @@ public class FrontendNoteManagement_Stepdefs {
         Thread.sleep(1000);
         String body = driver.findElement(By.tagName("body")).getText();
         Assert.assertFalse(body.contains(content));
+    }
+
+    /* EDIT NOTE */
+    @When("^I click on the edit button for \"([^\"]*)\"$")
+    public void i_click_on_the_edit_button_for(String link_id) throws Exception {
+        clickOn("edit__" + link_id);
+    }
+
+    @When("^I provide \"([^\"]*)\"$")
+    public void i_provide(String content) throws Exception {
+        updateInput("content", content);
+        updateForm();
+    }
+
+    @Then("^I should be notified that note has been edited successfully$")
+    public void i_should_be_notified_that_note_has_been_edited_successfully() throws Exception {
+        String body = driver.findElement(By.tagName("body")).getText();
+        Assert.assertTrue(body.contains("Note updated successfully"));
+    }
+
+    @Then("^I should see the note with the \"([^\"]*)\" in the list of notes$")
+    public void i_should_see_the_note_with_the_in_the_list_of_notes(String newContent) throws Exception {
+        String body = driver.findElement(By.tagName("body")).getText();
+        Assert.assertTrue(body.contains(newContent));
+    }
+
+    @Then("^I should not see the note with the \"([^\"]*)\" in the list of notes$")
+    public void i_should_not_see_the_note_with_the_in_the_list_of_notes(String oldContent) throws Exception {
+        String body = driver.findElement(By.tagName("body")).getText();
+        Assert.assertFalse(body.contains(oldContent));
     }
 }

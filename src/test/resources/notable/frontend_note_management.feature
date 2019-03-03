@@ -11,7 +11,6 @@ Feature: WebUI for Managing Notes
     Then I should be notified that note has been added successfully
     And my note should appear on the home page
 
-  @frontend
   Scenario Outline: Delete note
     Given I have added a note with "<id>" and "<content>"
     When I click on the delete button for "<id>"
@@ -21,3 +20,16 @@ Feature: WebUI for Managing Notes
     Examples:
       | id   | content                     |
       | 2000 | consectetur adipiscing elit |
+
+  @frontend
+  Scenario Outline: Edit note
+    Given I have added a note with "<id>" and "<old_content>"
+    When I click on the edit button for "<id>"
+    And I provide "<new_content>"
+    Then I should be notified that note has been edited successfully
+    And I should see the note with the "<new_content>" in the list of notes
+    And I should not see the note with the "<old_content>" in the list of notes
+
+    Examples:
+      | id | old_content             | new_content       |
+      | 7  | Excepteur sint occaecat | Culpa qui officia |

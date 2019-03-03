@@ -28,6 +28,7 @@ public class NoteController {
         return noteService.getNote(id);
     }
 
+    @CrossOrigin
     @RequestMapping(method = RequestMethod.PUT, value="/api/note/{id}")
     public Optional<Note> updateNote(@RequestBody Note note, @PathVariable String id) {
         return noteService.updateNote(note, id);

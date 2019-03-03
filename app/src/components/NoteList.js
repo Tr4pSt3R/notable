@@ -1,12 +1,13 @@
-import React, { Component } from 'react';
+import React, {Component, Fragment} from 'react';
 import {SERVER_URL} from "../constants";
 import AddNote from "./AddNote";
-import {ToastContainer, toast} from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
+import EditNote from "./EditNote";
 
 class Notelist extends Component {
   constructor(props) {
     super(props);
-    this.state = { allNotes: [] };
+    this.state = { allNotes: [], editing: false, currentNote: null };
   };
 
   componentDidMount() {
@@ -24,14 +25,28 @@ class Notelist extends Component {
     .catch(err => console.log(err));
   };
 
+  fetchNote = (id) => {
+    fetch(SERVER_URL + "api/note" + id)
+  };
+
   addNote(note) {
-    console.log(note);
     fetch(SERVER_URL + 'api/notes', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(note)
     })
     .then(() => toast.success("Note added successfully"))
+    .then(() => this.fetchNotes())
+    .catch((err) => console.log(err))
+  };
+
+  updateNote(note) {
+    fetch(SERVER_URL + 'api/note/' + note.id, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(note)
+    })
+    .then(() => toast.success("Note updated successfully"))
     .then(() => this.fetchNotes())
     .catch((err) => console.log(err))
   };
@@ -47,6 +62,12 @@ class Notelist extends Component {
     .catch( (err) => console.log(err));
   }
 
+  editNote = (note) => {
+    console.log(note);
+
+    this.setState({editing: true, currentNote: note});
+  };
+
   render() {
     return (
         <div className="Notelist">
@@ -54,12 +75,22 @@ class Notelist extends Component {
             this.state.allNotes.map((note) =>
               <div key={note.id}>
                 {note.content}
-                <a id={"delete__" + note.id} href="#" onClick={ (value) => this.deleteNote(value)}>Delete</a>
+                <a id={'delete__' + note.id} href='#' onClick={ (value) => this.deleteNote(value)}>delete</a>
+                <button id={'edit__' + note.id} onClick={ () => {this.editNote(note)} }>Edit note</button>
               </div>
             )
           }
           <ToastContainer />
-          <AddNote addNote={this.addNote} fetchNotes={this.fetchNotes} />
+          {
+            this.state.editing ?
+                <Fragment>
+                  <EditNote currentNote={this.state.currentNote} updateNote={this.updateNote} fetchNotes={this.fetchNotes} />
+                </Fragment>
+                :
+                <Fragment>
+                  <AddNote addNote={this.addNote} fetchNotes={this.fetchNotes} />
+                </Fragment>
+          }
         </div>
     );
   }

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
-import Notelist from "./components/NoteList";
+import Notelist from './components/NoteList';
 
 class App extends Component {
   render() {
