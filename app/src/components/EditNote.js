@@ -28,6 +28,7 @@ class EditNote extends React.Component {
 
     this.props.updateNote(note);
     this.props.fetchNotes();
+    this.props.finishedEditing();
   };
 
   render() {

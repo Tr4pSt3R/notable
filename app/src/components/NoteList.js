@@ -68,6 +68,10 @@ class Notelist extends Component {
     this.setState({editing: true, currentNote: note});
   };
 
+  finishedEditing = () => {
+    this.setState({editing: false});
+  };
+
   render() {
     return (
         <div className="Notelist">
@@ -84,7 +88,10 @@ class Notelist extends Component {
           {
             this.state.editing ?
                 <Fragment>
-                  <EditNote currentNote={this.state.currentNote} updateNote={this.updateNote} fetchNotes={this.fetchNotes} />
+                  <EditNote currentNote={this.state.currentNote}
+                            updateNote={this.updateNote}
+                            fetchNotes={this.fetchNotes}
+                            finishedEditing={this.finishedEditing} />
                 </Fragment>
                 :
                 <Fragment>

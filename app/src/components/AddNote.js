@@ -20,18 +20,20 @@ class AddNote extends React.Component {
 
   render() {
     return(
-      <div className="Add-note">
+      <div className='Add-note'>
         <h2>Add new note</h2>
         <form>
-          <input type="text"
-                 placeholder="Enter id"
-                 name="id"
+          <input type='text'
+                 placeholder='Enter id'
+                 name='id'
+                 value=''
                  onChange={this.handleChange}/>
-          <input type="text"
-                 placeholder="Enter note"
-                 name="content"
+          <input type='text'
+                 placeholder='Enter note'
+                 name='content'
+                 value=''
                  onChange={this.handleChange}/>
-          <button id="btn__add-note" onClick={this.handleSubmit}>Save</button>
+          <button id='btn__add-note' onClick={this.handleSubmit}>Save</button>
         </form>
       </div>
     );
