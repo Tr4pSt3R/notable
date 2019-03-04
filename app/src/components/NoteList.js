@@ -79,7 +79,7 @@ class Notelist extends Component {
             this.state.allNotes.map((note) =>
               <div key={note.id}>
                 {note.content}
-                <a id={'delete__' + note.id} href='#' onClick={ (value) => this.deleteNote(value)}>delete</a>
+                <button id={'delete__' + note.id} onClick={ (value) => this.deleteNote(value)}>Delete</button>
                 <button id={'edit__' + note.id} onClick={ () => {this.editNote(note)} }>Edit note</button>
               </div>
             )
